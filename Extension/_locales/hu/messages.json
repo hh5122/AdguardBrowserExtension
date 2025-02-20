@@ -89,6 +89,30 @@
     "options_popup_check_false_description": {
         "message": "Hiba történt az egyéni szűrő hozzáadása során."
     },
+    "options_add_custom_filter_modal_title": {
+        "message": "Egyéni szűrő hozzáadása"
+    },
+    "options_add_custom_filter_modal_checking_filter": {
+        "message": "A szűrő ellenőrzése..."
+    },
+    "options_add_custom_filter_modal_error_title": {
+        "message": "Nem sikerült az egyéni szűrő hozzáadása"
+    },
+    "options_add_custom_filter_modal_error_subtitle": {
+        "message": "Kérjük, próbálja újra, vagy forduljon az ügyfélszolgálathoz"
+    },
+    "options_add_custom_filter_modal_add_button": {
+        "message": "Hozzáad"
+    },
+    "options_add_custom_filter_modal_filter_name": {
+        "message": "Szűrő neve:"
+    },
+    "options_add_custom_filter_modal_filter_trusted": {
+        "message": "Megbízható"
+    },
+    "options_add_custom_filter_modal_filter_trusted_description": {
+        "message": "A megbízható szűrők hatékony szabálymódosítókat használhatnak – ügyeljen arra, hogy megbízható fejlesztőktől származó szűrőt használjon"
+    },
     "options_popup_try_again_button": {
         "message": "Újrapróbálkozás"
     },
@@ -117,8 +141,8 @@
         "message": "AdGuard Hirdetésblokkoló"
     },
     "description": {
-        "description": "TEXT MAX LENGTH: 132",
-        "message": "Páratlan adblock kiegészítő a reklámok és felugró ablakok ellen. Blokkolja a Facebook, YouTube és más webhelyek hirdetéseit."
+        "message": "Páratlan adblock kiegészítő a reklámok és felugró ablakok ellen. Blokkolja a Facebook, YouTube és más webhelyek hirdetéseit.",
+        "description": "TEXT MAX LENGTH: 132"
     },
     "background_tab_title": {
         "message": "Háttéroldal"
@@ -127,16 +151,19 @@
         "message": "Kivételek"
     },
     "options_allowlist_desc": {
-        "message": "Az AdGuard nem szűri a kivételek listáján szereplő oldalakat."
+        "message": "Az AdGuard nem szűri a kivételek listáján szereplő oldalakat"
     },
     "options_allowlist_invert": {
         "message": "Kivételek megfordítása"
     },
     "options_allowlist_invert_desc": {
-        "message": "Engedélyezze a hirdetéseket mindenhol, leszámítva a kivételek listáját."
+        "message": "Engedélyezze a hirdetéseket mindenhol, leszámítva a kivételek listáját"
     },
     "options_allowlist_alert_invert": {
         "message": "A kivételek listája meg lett fordítva. A hirdetések csak azokon a webhelyeken lesznek blokkolva, amik hozzá lettek adva a kivételekhez. <a>Kikapcsolás<\/a>"
+    },
+    "options_allowlist_leave_subtitle": {
+        "message": "A kivételek listájára tett módosításai elvesznek"
     },
     "options_userfilter": {
         "message": "Felhasználói szabályok"
@@ -213,11 +240,11 @@
     "options_filters_info_mv3_total_rules": {
         "message": "Összes szabály: %num%"
     },
-    "options_filters_info_mv3_specs": {
-        "message": "Specifikációk a Githubon"
-    },
     "options_add_custom_filter": {
         "message": "Egyéni szűrő hozzáadása"
+    },
+    "options_filters_custom_disabled_cws": {
+        "message": "Az egyéni szűrők hamarosan visszatérnek. Tudjon meg többet a blogunkban"
     },
     "options_empty_custom_filter": {
         "message": "Még nem állított be egyetlen egyéni szűrőt sem"
@@ -235,10 +262,10 @@
         "message": "A beállításfájl importálásához engedélyezze az AdGuard számára az adatvédelemmel kapcsolatos beállítások módosítását."
     },
     "options_popup_import_success_title": {
-        "message": "A beállítások sikeresen importálva lettek"
+        "message": "Beállítások importálva"
     },
     "options_popup_import_error_title": {
-        "message": "Hiba történt a beállítások importálásakor"
+        "message": "Nem sikerült importálni a beállításokat"
     },
     "options_popup_import_error_file_description": {
         "message": "Valami hiba történt."
@@ -286,10 +313,28 @@
         "message": "Blokkolva: %num%"
     },
     "popup_tab_blocked_all_count": {
-        "message": "Összesen: %num%"
+        "message": "Összes blokkolva: %num%"
     },
     "popup_statistics_total": {
         "message": "Összesen"
+    },
+    "popup_statistics_all_categories": {
+        "message": "Mind"
+    },
+    "popup_statistics_category_advertising": {
+        "message": "Hirdetés"
+    },
+    "popup_statistics_category_trackers": {
+        "message": "Követők"
+    },
+    "popup_statistics_category_social_media": {
+        "message": "Közösségi média"
+    },
+    "popup_statistics_category_cdn": {
+        "message": "CDN"
+    },
+    "popup_statistics_category_other": {
+        "message": "Egyéb"
     },
     "popup_statistics_week_days_mon": {
         "message": "Hét"
@@ -382,7 +427,7 @@
         "message": "TUDJON MEG TÖBBET"
     },
     "popup_block_site_ads_option": {
-        "message": "Hirdetések blokkolása ezen az oldalon"
+        "message": "Hirdetések manuális blokkolása"
     },
     "popup_security_report": {
         "message": "Webhely biztonságának ellenőrzése"
@@ -391,16 +436,16 @@
         "message": "Felhasználó szabályok törlése ennél a webhelynél"
     },
     "context_block_site_ads": {
-        "message": "Hirdetések blokkolása ezen az oldalon"
+        "message": "Hirdetések manuális blokkolása"
     },
     "context_security_report": {
-        "message": "Webhely biztonságának ellenőrzése..."
+        "message": "Webhely biztonságának ellenőrzése"
     },
     "context_complaint_website": {
-        "message": "Probléma bejelentése..."
+        "message": "Probléma bejelentése"
     },
     "context_site_filtering_disabled": {
-        "message": "Az AdGuard nem tud futni ezen a domainen"
+        "message": "Az AdGuard nem tudja szűrni ezt az oldalt"
     },
     "context_disable_protection": {
         "message": "AdGuard védelem szüneteltetése"
@@ -412,10 +457,10 @@
         "message": "AdGuard védelem szüneteltetve"
     },
     "context_open_settings": {
-        "message": "AdGuard beállítások..."
+        "message": "AdGuard beállítások"
     },
     "context_open_log": {
-        "message": "Szűrési napló..."
+        "message": "Szűrési napló"
     },
     "context_site_exception": {
         "message": "Ez az oldal a kivételek között szerepel"
@@ -441,6 +486,9 @@
     "filters_download_loading": {
         "message": "Kérjük várjon, amíg a szűrők adatbázisa betölt..."
     },
+    "post_install_loading": {
+        "message": "Bővítmény betöltése..."
+    },
     "filtering_modal_element": {
         "message": "Elem:"
     },
@@ -460,10 +508,10 @@
         "message": "Keresés a lapok között"
     },
     "filtering_log_preserve_log_off": {
-        "message": "Napló megőrzése: KI"
+        "message": "Napló nem rögzítése"
     },
     "filtering_log_preserve_log_on": {
-        "message": "Napló megőrzése: BE"
+        "message": "Napló rögzítése"
     },
     "filtering_refresh_tab_short": {
         "message": "Frissítés"
@@ -493,7 +541,7 @@
         "message": "Szűrő"
     },
     "filtering_table_empty_reload_page_desc": {
-        "message": "<reset>Kapcsolja ki a szűrőket<\/reset> vagy <refresh>töltse újra az oldalt<\/refresh> a szűrési eseménynapló megtekintéséhez."
+        "message": "Nem találtunk semmit. <reset>Kapcsolja ki a szűrőket<\/reset>, vagy <refresh>töltse be újra az oldalt<\/refresh> a naplóbejegyzések megtekintéséhez."
     },
     "filtering_modal_info_title": {
         "message": "Kérés részletei"
@@ -544,7 +592,7 @@
         "message": "Állapot:"
     },
     "filtering_modal_status_text_error": {
-        "message": "Nem érkezett válasz"
+        "message": "Nem sikerült betölteni az előnézetet. Kérjük, próbálja újra"
     },
     "filtering_modal_status_text_loading": {
         "message": "Betöltés..."
@@ -643,7 +691,7 @@
         "message": "Blokkolja a keresők hirdetéseit és a weboldalak önpromóciós reklámjait"
     },
     "options_block_acceptable_ads_desc": {
-        "message": "Szabaduljon meg a <a>webhelyek önpromóciós reklámjaitól és a kontextusalapú hirdetésektől<\/a>, amelyek a keresési eredmények között jelennek meg."
+        "message": "Törölje a saját reklámait a weboldalakról és a kontextusos hirdetéseket a keresési találatokból. <a>Tudjon meg többet<\/a>"
     },
     "options_show_blocked_ads_count_title": {
         "message": "A blokkolt hirdetések számának megjelenítése az AdGuard kiegészítő ikonján"
@@ -652,7 +700,7 @@
         "message": "A megfelelő szűrők automatikus aktiválása"
     },
     "options_enable_autodetect_filter_desc": {
-        "message": "A nyelvspecifikus szűrők a webhely nyelvétől függően aktiválódnak."
+        "message": "A nyelvspecifikus szűrők a webhely nyelvétől függően aktiválódnak"
     },
     "options_select_theme": {
         "message": "Téma"
@@ -694,7 +742,7 @@
         "message": "Szűrők automatikus frissítése"
     },
     "options_set_update_interval_desc": {
-        "message": "A hatékonyabb blokkolás érdekében a szűrőket rendszeresen frissíteni kell."
+        "message": "A hatékonyabb blokkolás érdekében a szűrőket rendszeresen frissíteni kell"
     },
     "options_userfilter_export": {
         "message": "Exportálás"
@@ -702,17 +750,32 @@
     "options_editor_save": {
         "message": "Mentés"
     },
+    "options_editor_leave_title": {
+        "message": "Bezárás mentés nélkül?"
+    },
+    "options_editor_leave_confirm": {
+        "message": "Igen, kijelentkezés"
+    },
+    "options_editor_leave_cancel": {
+        "message": "Vissza a szerkesztéshez"
+    },
     "options_userfilter_import": {
         "message": "Importálás"
     },
     "options_userfilter_description_key": {
         "message": "Itt hozzáadhatja saját szabályait. Ezt a lehetőséget csak a HTML\/CSS világában jártas felhasználóinknak ajánljuk. Olvassa el a <a>szűrőszabályokról szóló oktatóanyagot<\/a>, hogy megtanulja, hogyan írhat saját szűrőszabályokat."
     },
+    "options_userfilter_subtitle_key": {
+        "message": "Finomítsa a hirdetésblokkolást saját szűrési szabályaival"
+    },
     "options_userfilter_line_break_off": {
-        "message": "Sortörés: KI"
+        "message": "Sortörés: Letiltva"
     },
     "options_userfilter_line_break_on": {
-        "message": "Sortörés: BE"
+        "message": "Sortörés: Engedélyezve"
+    },
+    "options_userfilter_leave_subtitle": {
+        "message": "A szabályok módosításai elvesznek"
     },
     "options_open_changelog": {
         "message": "Változásnapló"
@@ -738,35 +801,39 @@
     "options_miscellaneous_settings": {
         "message": "Vegyes"
     },
+    "options_rule_syntax": {
+        "message": "Szabály szintaxis"
+    },
     "options_rule_limits": {
         "message": "Szabálykorlátok"
     },
     "options_rule_limits_description": {
-        "message": "Ez a bővítmény megfelel a Manifest V3-nak"
-    },
-    "options_rule_limits_description_link": {
-        "message": "Tudjon meg többet a Manifest V3-ról"
+        "message": "A Chrome korlátozza az alkalmazható szabályok számát"
     },
     "options_rule_limits_dynamic": {
         "message": "Dinamikus szabályok"
     },
     "options_rule_limits_dynamic_user_rules": {
-        "message": "Felhasználó által hozzáadott szabályok, például felhasználói szabályok és egyéni szűrők"
+        "message": "Felhasználó által hozzáadott szabályok, például <user_rules>felhasználói szabályok<\/user_rules>, <allowlist>engedélyezési listás webhelyek<\/allowlist>, <custom_filters>egyéni szűrők<\/custom_filters>, és <quick_fixes>Gyorsjavítás szűrő<\/quick_fixes>"
+    },
+    "options_rule_limits_dynamic_unsafe": {
+        "description": "Note: First dollar sign is used to escape the second one, so eventually only one dollar sign will be displayed",
+        "message": "Nem biztonságos dinamikus szabályok (egyes speciális módosítókhoz használatosak, például $$redirect vagy $$cookie) – a felhasználó által hozzáadott szabályokban"
     },
     "options_rule_limits_dynamic_regex": {
-        "message": "Regex szabályok – a fentiekben"
+        "message": "Regex szabályok — Itt szerepelnek a felhasználó által hozzáadott szabályok"
     },
     "options_rule_limits_static_rulesets": {
         "message": "Statikus szabályrendszerek"
     },
     "options_rule_limits_static_rulesets_builtin": {
-        "message": "Beépített szűrők, mint például a zavaró tényezők blokkolása vagy a nyelvspecifikus szűrők"
+        "message": "<a>Beépített szűrők<\/a>, mint például a zavaró tényezők blokkolása vagy a nyelvspecifikus szűrők"
     },
     "options_rule_limits_static_rules": {
         "message": "Statikus szabályok"
     },
     "options_rule_limits_static_rules_all": {
-        "message": "Beépített szűrők szabályai"
+        "message": "Szabályok innen: <a>beépített szűrők<\/a>"
     },
     "options_rule_limits_static_rules_regex": {
         "message": "Regex szabályok – a fentiekben"
@@ -819,6 +886,9 @@
     "options_limits_warning_dynamic_rules": {
         "message": "Elérte a felhasználók által hozzáadott szabályok korlátját. %maximum% \/ %current% szabály engedélyezve van."
     },
+    "options_limits_warning_dynamic_unsafe_rules": {
+        "message": "Elérte a felhasználók által hozzáadott nem biztonságos szabályok korlátját. %maximum% a %current% nem biztonságos szabályok közül engedélyezve van."
+    },
     "options_limits_warning_dynamic_regex_rules": {
         "message": "Elérte a felhasználók által hozzáadott reguláris kifejezések korlátját. %maximum% \/ %current% regex szabály engedélyezve van."
     },
@@ -850,7 +920,7 @@
         "message": "Segítsen az AdGuard szűrőinek fejlesztésében"
     },
     "options_collect_hit_stats_desc": {
-        "message": "Küldjön <a>névtelen statisztikákat a hirdetésszűrők használatáról<\/a>, ezzel segíti a javítást és optimalizálást."
+        "message": "Küldjön <a>névtelen statisztikákat a hirdetésszűrők használatáról<\/a>, ezzel segíti az AdGuard szűrőinek javítását"
     },
     "options_show_context_menu_title": {
         "message": "Az AdGuard hozzáadása a böngésző helyi menüjéhez"
@@ -865,25 +935,25 @@
         "message": "Nyomon követés elleni védelem"
     },
     "options_privacy_desc": {
-        "message": "Védje meg személyazonosságát, és érzékeny személyes adatait több ezer online nyomkövetőtől a legnépszerűbb követési módszerek blokkolásával."
+        "message": "Védje meg személyazonosságát és érzékeny személyes adatait több ezer online nyomkövetőtől a legnépszerűbb követési módszerek blokkolásával"
     },
     "options_hide_referrer_title": {
         "message": "Referer elrejtése a harmadik felek elől"
     },
     "options_hide_referrer_desc": {
-        "message": "Annak megelőzése, hogy a harmadik felek megismerjék, Ön milyen webhelyeket látogat meg"
+        "message": "Annaks megelőzése, hogy a harmadik felek megismerjék, Ön milyen webhelyeket látogat meg"
     },
     "options_hide_search_queries_title": {
         "message": "Keresési kérések elrejtése"
     },
     "options_hide_search_queries_desc": {
-        "message": "Elrejti a keresési kérést a weboldal elől, amit a kereső találatai közül látogat meg."
+        "message": "A keresési lekérdezéseket elrejti a látogatott weboldalak elől."
     },
     "options_send_not_track_title": {
         "message": "Kéri a webhelyeket, hogy ne kövessék nyomon"
     },
     "options_send_not_track_desc": {
-        "message": "Ez elküldi a <gpc>Global Privacy Control<\/gpc> és a <dnt>Do Not Track<\/dnt> jelzéseket a webhelyek számára, amelyeket meglátogat."
+        "message": "Ez elküldi a <gpc>Global Privacy Control<\/gpc> és a <dnt>Do Not Track<\/dnt> jelzéseket a webhelyek számára, amelyeket meglátogat"
     },
     "options_stripped_tracking_parameters": {
         "message": "Követési paraméterek eltávolítva"
@@ -898,37 +968,37 @@
         "message": "X-Client-Data fejléc eltávolítása"
     },
     "options_remove_client_data_desc": {
-        "message": "Megakadályozza, hogy a Google Chrome elküldje a verziószámát és egyéb információkat a Google domainek felé."
+        "message": "Megakadályozza, hogy a Google Chrome elküldje a verziószámát és egyéb információkat a Google domainek felé"
     },
     "options_disable_webrtc_title": {
         "message": "WebRTC tiltása"
     },
     "options_disable_webrtc_desc": {
-        "message": "A WebRTC mögül szivárog az IP cím, így megtudhatják az Ön valós IP címét, hiába használ proxyt vagy VPN-t A WebRTC letiltása elronthatja egyes webhelyek működését."
+        "message": "A WebRTC mögül szivárog az IP cím, így megtudhatják az Ön valós IP címét, hiába használ proxyt vagy VPN-t. A WebRTC letiltása elronthatja egyes webhelyek működését"
     },
     "options_strip_tracking_params_title": {
         "message": "Követési paraméterek levágása"
     },
     "options_strip_tracking_params_description": {
-        "message": "Az AdGuard URL Tracking filter segítségével eltávolítja a paramétereket a webes kérésekből."
+        "message": "Az AdGuard URL Követés szűrő segítségével eltávolítja a paramétereket a webes kérésekből"
     },
     "options_block_known_trackers_title": {
         "message": "Nyomkövetők blokkolása"
     },
     "options_block_known_trackers_description": {
-        "message": "Az AdGuard Tracking Protection szűrő segítségével blokkolja a nyomkövetőket és az elemző eszközöket."
+        "message": "Az AdGuard Követés Elleni szűrő segítségével blokkolja a nyomkövetőket és az elemző eszközöket"
     },
     "options_third_party_title": {
         "message": "Harmadik féltől származó sütik önmegsemmisítése"
     },
     "options_third_party_desc": {
-        "message": "A külső sütik élettartamának korlátozása (percekben)."
+        "message": "A külső sütik élettartamának korlátozása (percekben)"
     },
     "options_first_party_title": {
         "message": "Az elsődleges sütik önmegsemmisítése (nem ajánlott)"
     },
     "options_first_party_desc": {
-        "message": "Az elsődleges sütik élettartamának korlátozása (percekben)."
+        "message": "Az elsődleges sütik élettartamának korlátozása (percekben)"
     },
     "popup_abuse_site": {
         "message": "Probléma bejelentése"
@@ -959,6 +1029,9 @@
     },
     "popup_limits_exceeded_warning": {
         "message": "A böngészője módosította az aktív beépített szűrők listáját"
+    },
+    "snack_on_websites_limits_exceeded_warning": {
+        "message": "Túllépte a szabálykorlátot az AdGuard böngészőbővítményben. Kérjük, ellenőrizze a szűrőket, és tiltsa le azokat, amelyekre nincs szüksége"
     },
     "short_name": {
         "message": "AdGuard"
@@ -1000,34 +1073,37 @@
         "message": "AdGuard Böngészőkiegészítő"
     },
     "group_description_adblocking": {
-        "message": "Itt tudja beállítani a hirdetésblokkolást, hogy egyszer és mindenkorra megszabaduljon a szalaghirdetésektől, felugró ablakoktól, videohirdetésektől, stb."
+        "message": "Itt tudja beállítani a hirdetésblokkolást, hogy egyszer és mindenkorra megszabaduljon a szalaghirdetésektől, felugró ablakoktól, videóhirdetésektől, stb"
     },
     "group_description_stealth": {
-        "message": "Védje személyazonosságát és érzékeny személyes adatait az online nyomkövetők ezreivel szemben azzal, hogy blokkolja az összes népszerű nyomkövetési technikát."
+        "message": "Védje meg személyazonosságát és érzékeny személyes adatait az online nyomkövetők ezreivel szemben azzal, hogy blokkolja az összes népszerű nyomkövetési technikát"
     },
     "group_description_social": {
-        "message": "Rejtse el a kéretlen \"Lájk\"\/\"Megosztás\" gombokat és a többi közösségi média widgetet."
+        "message": "Rejtse el a kéretlen \"Lájk\"\/\"Megosztás\" gombokat és a többi közösségi média widgetet"
     },
     "group_description_annoyances": {
-        "message": "Távolítsa el az előugró ablakokat és egyéb bosszantó értesítéseket, például a süti értesítéseket."
+        "message": "Távolítsa el az előugró ablakokat és egyéb bosszantó értesítéseket, például a süti értesítéseket"
     },
     "group_description_security": {
-        "message": "Védje magát a rosszindulatú programokkal, adathalászokkal és más online fenyegetésekkel szemben."
+        "message": "Védje magát a rosszindulatú programokkal, adathalászokkal és más online fenyegetésekkel szemben"
     },
     "group_description_miscellaneous": {
-        "message": "Egyéb beállítások, amelyekkel még tovább fokozhatja a webes böngészését az AdGuarddal."
+        "message": "Egyéb beállítások, amelyekkel még tovább fokozhatja a webes böngészését az AdGuarddal"
     },
     "group_description_custom": {
         "message": "Hozza létre saját szűrőit a szűrés tetszés szerinti finomhangolásához."
     },
     "group_description_lang": {
-        "message": "Ne szorítsa magát korlátok közé — blokkolja a hirdetéseket bármilyen nyelvű weboldalon."
+        "message": "Ne szorítsa magát korlátok közé — blokkolja a hirdetéseket bármilyen nyelvű weboldalon"
     },
     "fullscreen_user_rules_title": {
         "message": "Felhasználói szabályok"
     },
     "options_user_rules_editor_stub_title": {
-        "message": "A szerkesztő már meg van nyitva"
+        "message": "A szerkesztő egy másik ablakban nyitva van"
+    },
+    "options_user_rules_editor_stub_subtitle": {
+        "message": "A szabályai itt jelennek meg, miután bezárta"
     },
     "options_user_rules_editor_stub_go_to_editor_button": {
         "message": "Szerkesztő megnyitása"
@@ -1063,25 +1139,25 @@
         "message": "Újrapróbálkozás"
     },
     "filtering_log_tag_tooltip_first_party": {
-        "message": "Csak elsődleges kérések"
+        "message": "Elsődleges kérések"
     },
     "filtering_log_tag_tooltip_third_party": {
-        "message": "Csak harmadik fél kérései"
+        "message": "Harmadik fél kérések"
     },
     "filtering_log_tag_tooltip_regular": {
-        "message": "Csak szűrés nélkül feldolgozott kérések"
+        "message": "Szűrés nélkül feldolgozott kérések"
     },
     "filtering_log_tag_tooltip_allowed": {
-        "message": "Csak engedélyezett vagy feloldott kérések"
+        "message": "Engedélyezett és feloldott kérések"
     },
     "filtering_log_tag_tooltip_blocked": {
-        "message": "Csak blokkolt kérések"
+        "message": "Blokkolt kérések"
     },
     "filtering_log_tag_tooltip_modified": {
-        "message": "Csak módosított kérések"
+        "message": "Módosított kérések"
     },
     "filtering_log_tag_tooltip_user_rules": {
-        "message": "Csak a felhasználói szabályok által módosított kérések"
+        "message": "Felhasználói szabályok által érintett kérések"
     },
     "filtering_log_tag_tooltip_html": {
         "message": "Dokumentumok és aldokumentumok"
@@ -1102,7 +1178,7 @@
         "message": "Média"
     },
     "filtering_log_tag_tooltip_other": {
-        "message": "Betűtípusok, ping, WebRTC, WebSocket stb."
+        "message": "Betűtípusok, ping, WebRTC, WebSocket..."
     },
     "filtering_log_badge_tooltip_third_party": {
         "message": "Harmadik fél kérése"
@@ -1112,6 +1188,9 @@
     },
     "filtering_log_badge_tooltip_http_status_code": {
         "message": "HTTP állapot kód"
+    },
+    "filtering_log_assumed_rule_description": {
+        "message": "Ez egy feltételezett szabály. További részletekért lásd a <a>Tudásbázist<\/a>"
     },
     "options_stealth_general_title": {
         "message": "Általános"
@@ -1164,8 +1243,19 @@
     "close_button_title": {
         "message": "Bezárás"
     },
+    "filtering_modal_applied_rules": {
+        "message": "| Alkalmazott szabály: | Alkalmazott szabályok:",
+        "description": "WARNING: correct number of plural forms is required"
+    },
+    "filtering_modal_assumed_rules": {
+        "message": "| Feltételezett szabály: | Feltételezett szabályok:",
+        "description": "WARNING: correct number of plural forms is required"
+    },
     "filtering_modal_original_rules": {
-        "description": "WARNING: correct number of plural forms is required",
-        "message": "| Eredeti szabály | Eredeti szabály"
+        "message": "| Eredeti szabály: | Eredeti szabályok:",
+        "description": "WARNING: correct number of plural forms is required"
+    },
+    "filtering_modal_declarative_rule": {
+        "message": "DNR szabály:"
     }
 }

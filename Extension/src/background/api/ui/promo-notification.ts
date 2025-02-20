@@ -77,9 +77,10 @@ export class PromoNotificationApi {
         }
 
         if (withDelay) {
-            window.clearTimeout(this.timeoutId);
+            clearTimeout(this.timeoutId);
 
-            this.timeoutId = window.setTimeout(() => {
+            // eslint-disable-next-line no-restricted-globals
+            this.timeoutId = self.setTimeout(() => {
                 this.setNotificationViewed(false);
             }, PromoNotificationApi.DELAY_MS);
 
@@ -193,6 +194,7 @@ export class PromoNotificationApi {
      * Scans notification locales and returns the one matching navigator.language.
      *
      * @param notification Promo notification object.
+     *
      * @returns {NotificationTextRecord | undefined} Matching notification text settings or undefined.
      */
     private static getNotificationText(notification: PromoNotification): NotificationTextRecord | undefined {

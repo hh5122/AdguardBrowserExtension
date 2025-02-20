@@ -37,14 +37,14 @@ export type TextInputValue = string | number;
 export type TextEventHandler = ChangeEventHandler<HTMLInputElement>;
 
 export type TextInputProps = {
-  id: string;
-  value: TextInputValue;
-  handler: SettingHandler;
-  placeholder?: string;
-  disabled?: boolean;
-  required?: boolean;
-  minValue?: number;
-  step?: number;
+    id: string;
+    value: TextInputValue;
+    handler: SettingHandler;
+    placeholder?: string;
+    disabled?: boolean;
+    required?: boolean;
+    minValue?: number;
+    step?: number;
 };
 
 const HANDLE_TEXT_INPUT_DEBOUNCE_MS = 1000;
@@ -55,6 +55,7 @@ const HANDLE_TEXT_INPUT_DEBOUNCE_MS = 1000;
  *
  * @param value Text input value.
  * @param handler Setting change handler.
+ *
  * @returns Tuple of the current value and the debounced setting change handler.
  */
 const useTextInput = (

@@ -1,10 +1,21 @@
-import { Storage } from 'webextension-polyfill';
+import browser, { type Storage } from 'webextension-polyfill';
 import waitForExpect from 'wait-for-expect';
 import { merge } from 'lodash-es';
+import {
+    afterEach,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from 'vitest';
 
 import { FilterListPreprocessor } from '@adguard/tswebextension';
+import { getRuleSetId, getRuleSetPath } from '@adguard/tsurlfilter/es/declarative-converter-utils';
 
-import { HitStatsApi, network } from '../../../../../Extension/src/background/api';
+import { network } from '../../../../../Extension/src/background/api/network';
+import { HitStatsApi } from '../../../../../Extension/src/background/api/filters/hit-stats';
 import { FilterVersionData, HitStatsStorageData } from '../../../../../Extension/src/background/schema';
 import {
     AntiBannerFiltersId,
@@ -13,6 +24,12 @@ import {
 } from '../../../../../Extension/src/common/constants';
 import { mockLocalStorage } from '../../../../helpers';
 import { FiltersStorage, filterVersionStorage } from '../../../../../Extension/src/background/storages';
+import { FiltersStoragesAdapter } from '../../../../../Extension/src/background/storages/filters-adapter';
+
+const preprocessedFilter = FilterListPreprocessor.preprocess([
+    'example.com##h1',
+    '||example.org^$document',
+].join('\n'));
 
 describe('Hit Stats Api', () => {
     let storage: Storage.StorageArea;
@@ -29,13 +46,35 @@ describe('Hit Stats Api', () => {
         lastCheckTime: currentDate,
     };
 
-    const preprocessedFilter = FilterListPreprocessor.preprocess([
-        'example.com##h1',
-        '||example.org^$document',
-    ].join('\n'));
+    let getFilterSpy: MockInstance;
+    let getManifestSpy: MockInstance | undefined;
 
     beforeEach(async () => {
         storage = mockLocalStorage();
+        getFilterSpy = vi.spyOn(FiltersStoragesAdapter, 'get').mockResolvedValue(preprocessedFilter);
+
+        if (__IS_MV3__) {
+            getManifestSpy = vi.spyOn(browser.runtime, 'getManifest').mockReturnValue({
+                ...browser.runtime.getManifest(),
+                declarative_net_request: {
+                    rule_resources: [
+                        {
+                            id: getRuleSetId(filterId),
+                            enabled: true,
+                            path: getRuleSetPath(filterId),
+                        },
+                    ],
+                },
+            });
+        }
+    });
+
+    afterEach(() => {
+        getFilterSpy.mockRestore();
+
+        if (__IS_MV3__ && getManifestSpy) {
+            getManifestSpy.mockRestore();
+        }
     });
 
     it('inits', async () => {
@@ -47,7 +86,7 @@ describe('Hit Stats Api', () => {
     it('Adds rule hit', async () => {
         await HitStatsApi.init();
 
-        jest.spyOn(filterVersionStorage, 'get').mockReturnValue(filterVersionDataMock);
+        vi.spyOn(filterVersionStorage, 'get').mockReturnValue(filterVersionDataMock);
 
         HitStatsApi.addRuleHit(filterId, ruleIndex);
 
@@ -69,7 +108,7 @@ describe('Hit Stats Api', () => {
             [HIT_STATISTIC_KEY]: JSON.stringify(expected),
         });
 
-        jest.clearAllMocks();
+        vi.clearAllMocks();
     });
 
     it('Cleanup data', async () => {
@@ -127,14 +166,14 @@ describe('Hit Stats Api', () => {
         // Mock the static member
         Object.defineProperty(HitStatsApi, 'maxTotalHits', merge(originalMaxTotalHits, { value: 5 }));
 
-        const sendHitStatsSpy = jest.spyOn(network, 'sendHitStats').mockImplementation(async () => {});
-        const cleanupSpy = jest.spyOn(HitStatsApi, 'cleanup');
-        jest.spyOn(FiltersStorage, 'getAllFilterData').mockResolvedValue(preprocessedFilter);
+        const sendHitStatsSpy = vi.spyOn(network, 'sendHitStats').mockImplementation(async () => {});
+        const cleanupSpy = vi.spyOn(HitStatsApi, 'cleanup');
+        vi.spyOn(FiltersStorage, 'get').mockResolvedValue(preprocessedFilter);
 
         await HitStatsApi.init();
 
         // Initially, both filter has version '1'
-        jest.spyOn(filterVersionStorage, 'get').mockReturnValue(filterVersionDataMock);
+        vi.spyOn(filterVersionStorage, 'get').mockReturnValue(filterVersionDataMock);
 
         // Add hits to both filters
         HitStatsApi.addRuleHit(FIRST_FILTER_ID, 4);
@@ -144,7 +183,7 @@ describe('Hit Stats Api', () => {
         HitStatsApi.addRuleHit(SECOND_FILTER_ID, 48);
 
         // Now let's simulate that the version of the first filter has increased
-        jest.spyOn(filterVersionStorage, 'get').mockImplementation((filterId: number) => {
+        vi.spyOn(filterVersionStorage, 'get').mockImplementation((filterId: number) => {
             if (filterId === FIRST_FILTER_ID) {
                 return {
                     ...filterVersionDataMock,
@@ -158,7 +197,7 @@ describe('Hit Stats Api', () => {
         // Add a hit to the first filter again to trigger the sending of stats
         HitStatsApi.addRuleHit(FIRST_FILTER_ID, ruleIndex);
 
-        // addRuleHit is a sync method, but it calls saveAndSaveHitStats which is async,
+        // addRuleHit is a sync method, but it calls saveAndSendHitStats which is async,
         // so we need wait for it to be called
         await waitForExpect(
             () => {
@@ -179,7 +218,7 @@ describe('Hit Stats Api', () => {
 
         expect(cleanupSpy).toHaveBeenCalled();
 
-        jest.clearAllMocks();
+        vi.clearAllMocks();
 
         // Restore the original value
         Object.defineProperty(HitStatsApi, 'maxTotalHits', originalMaxTotalHits);

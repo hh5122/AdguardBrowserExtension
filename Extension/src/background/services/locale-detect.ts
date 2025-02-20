@@ -18,8 +18,7 @@
 
 import browser, { Tabs } from 'webextension-polyfill';
 
-import { isHttpRequest, getDomain } from '@adguard/tswebextension';
-
+import { getDomain, isHttpRequest } from '../tswebextension';
 import { UserAgent } from '../../common/user-agent';
 import { RegularFilterMetadata, SettingOption } from '../schema';
 import {
@@ -27,7 +26,7 @@ import {
     metadataStorage,
     settingsStorage,
 } from '../storages';
-import { Engine } from '../engine';
+import { engine } from '../engine';
 import { toasts } from '../api/ui';
 import { FiltersApi } from '../api/filters/main';
 import { CommonFilterApi } from '../api/filters/common';
@@ -217,7 +216,7 @@ export class LocaleDetect {
         changeInfo: Tabs.OnUpdatedChangeInfoType,
         tab: Tabs.Tab,
     ): Promise<void> {
-        if (tab.status === 'complete') {
+        if (tab.status === 'complete' && !__IS_MV3__) {
             await this.detectTabLanguage(tab);
         }
     }
@@ -283,6 +282,7 @@ export class LocaleDetect {
      * to auto-enable filter for this language.
      *
      * @param language Page language.
+     *
      * @private
      */
     private async detectLanguage(language: string): Promise<void> {
@@ -323,6 +323,7 @@ export class LocaleDetect {
      * Called when LocaleDetector has detected language-specific filters we can enable.
      *
      * @param filterIds List of detected language-specific filter identifiers.
+     *
      * @private
      */
     private static async onFilterDetectedByLocale(filterIds: number[]): Promise<void> {
@@ -332,6 +333,8 @@ export class LocaleDetect {
 
         const disabledFiltersIds = filterIds.filter((filterId) => !FiltersApi.isFilterEnabled(filterId));
 
+        // TODO: Check, do we really need always enable language group,
+        // even if user disabled it manually?
         // Always enable language filters group.
         groupStateStorage.enableGroups([AntibannerGroupsId.LanguageFiltersGroupId]);
 
@@ -339,8 +342,9 @@ export class LocaleDetect {
             return;
         }
 
-        await FiltersApi.loadAndEnableFilters(disabledFiltersIds, true);
-        Engine.debounceUpdate();
+        const remote = !__IS_MV3__;
+        await FiltersApi.loadAndEnableFilters(disabledFiltersIds, remote);
+        engine.debounceUpdate();
 
         const filters: RegularFilterMetadata[] = [];
 

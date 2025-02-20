@@ -27,6 +27,7 @@ export class TabsApi {
      * Returns first matched tab for passed {@link Tabs.QueryQueryInfoType}.
      *
      * @param queryInfo Browser.tabs.query argument.
+     *
      * @returns First matched tab or undefined.
      */
     public static async findOne(queryInfo: Tabs.QueryQueryInfoType): Promise<Tabs.Tab | undefined> {
@@ -74,6 +75,7 @@ export class TabsApi {
      * Check, if page in tab is extension page.
      *
      * @param tab {@link Tabs.Tab} Data.
+     *
      * @returns True if it is extension page, else returns false.
      */
     public static isAdguardExtensionTab(tab: Tabs.Tab): boolean {
@@ -101,13 +103,14 @@ export class TabsApi {
     }
 
     /**
-     * Reload tab without cache by specified id.
+     * Reloads a tab without cache by specified id.
+     *
      * Clearing the cache on reload is necessary for correct application of the rules on pages with service workers.
      *
      * @param id Tab id.
      */
     public static async reload(id: number | undefined): Promise<void> {
-        return browser.tabs.reload(id, {
+        await browser.tabs.reload(id, {
             bypassCache: true,
         });
     }

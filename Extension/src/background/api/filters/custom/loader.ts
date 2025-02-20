@@ -17,7 +17,7 @@
  */
 import { type DownloadResult } from '@adguard/filters-downloader/browser';
 
-import { createPromiseWithTimeout } from '../../../utils/timers';
+import { createPromiseWithTimeout } from '../../../utils/timeouts';
 import { network } from '../../network';
 
 const emptyDownloadResult: DownloadResult = {
@@ -40,8 +40,10 @@ export class CustomFilterLoader {
      * @param url Custom filter download url.
      * @param rawFilter Optional raw filter rules.
      * @param force Optional flag to choose download filter in whole or by patches.
-     * @throws Error if filter was not downloaded in {@link DOWNLOAD_LIMIT_MS}.
+     *
      * @returns Downloaded custom filter rules.
+     *
+     * @throws Error if filter was not downloaded in {@link DOWNLOAD_LIMIT_MS}.
      */
     public static async downloadRulesWithTimeout(
         url: string,

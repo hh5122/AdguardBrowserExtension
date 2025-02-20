@@ -17,15 +17,16 @@
  */
 import browser, { Runtime } from 'webextension-polyfill';
 
+import { KEEP_ALIVE_PORT_NAME } from '../common/constants';
 import {
-    FILTERING_LOG,
-    FULLSCREEN_USER_RULES_EDITOR,
-    KEEP_ALIVE_PORT_NAME,
-} from '../common/constants';
-import { MessageType } from '../common/messages';
+    messageHasTypeAndDataFields,
+    MessageType,
+    type NotifyListenersMessage,
+} from '../common/messages';
 import { logger } from '../common/logger';
+import { Page } from '../pages/services/messenger';
 
-import { listeners } from './notifier';
+import { notifier } from './notifier';
 import { filteringLogApi } from './api';
 import { fullscreenUserRulesEditor } from './services';
 import { KeepAlive } from './keep-alive';
@@ -42,7 +43,7 @@ export class ConnectionHandler {
     }
 
     /**
-     * Handles long-live connection to the port.
+     * Handles long-live connection to the port with message {@link MessageType.AddLongLivedConnectionMessage}.
      *
      * @param port Object of {@link Runtime.Port}.
      */
@@ -54,23 +55,37 @@ export class ConnectionHandler {
         ConnectionHandler.onPortConnection(port);
 
         port.onMessage.addListener((message) => {
-            const { type, data } = message;
-            if (type === MessageType.AddLongLivedConnection) {
-                const { events } = data;
-                listenerId = listeners.addSpecifiedListener(events, async (...data) => {
-                    const type = MessageType.NotifyListeners;
-                    try {
-                        port.postMessage({ type, data });
-                    } catch (e) {
-                        logger.error(e);
-                    }
-                });
+            if (!messageHasTypeAndDataFields(message)) {
+                // eslint-disable-next-line max-len
+                logger.error('Received message in ConnectionHandler.handleConnection has no type or data field: ', message);
+                return;
             }
+
+            if (message.type !== MessageType.AddLongLivedConnection) {
+                return;
+            }
+
+            const { data: { events } } = message;
+
+            listenerId = notifier.addSpecifiedListener(events, async (...data) => {
+                try {
+                    const message: NotifyListenersMessage = {
+                        type: MessageType.NotifyListeners,
+                        data,
+                    };
+                    port.postMessage(message);
+                } catch (e) {
+                    logger.error('Failed to send message to the port due to an error:', e);
+                }
+            });
         });
 
         port.onDisconnect.addListener(() => {
+            if (chrome.runtime.lastError) {
+                logger.debug('An error occurred on disconnect', browser.runtime.lastError);
+            }
             ConnectionHandler.onPortDisconnection(port);
-            listeners.removeListener(listenerId);
+            notifier.removeListener(listenerId);
             logger.info(`Port: "${port.name}" disconnected`);
         });
     }
@@ -78,19 +93,19 @@ export class ConnectionHandler {
     /**
      * Handler for initial port connection.
      *
+     * @param port Object of {@link Runtime.Port}.
+     *
      * @throws Basic {@link Error} if the page specified in the port name
      * is not found.
-     *
-     * @param port Object of {@link Runtime.Port}.
      */
     private static onPortConnection(port: Runtime.Port): void {
         switch (true) {
-            case port.name.startsWith(FILTERING_LOG): {
+            case port.name.startsWith(Page.FilteringLog): {
                 filteringLogApi.onOpenFilteringLogPage();
                 break;
             }
 
-            case port.name.startsWith(FULLSCREEN_USER_RULES_EDITOR): {
+            case port.name.startsWith(Page.FullscreenUserRules): {
                 fullscreenUserRulesEditor.onOpenPage();
                 break;
             }
@@ -110,19 +125,19 @@ export class ConnectionHandler {
     /**
      * Handler for port disconnection.
      *
+     * @param port Object of {@link Runtime.Port}.
+     *
      * @throws Basic {@link Error} if the page specified in the port name
      * is not found.
-     *
-     * @param port Object of {@link Runtime.Port}.
      */
     private static onPortDisconnection(port: Runtime.Port): void {
         switch (true) {
-            case port.name.startsWith(FILTERING_LOG): {
+            case port.name.startsWith(Page.FilteringLog): {
                 filteringLogApi.onCloseFilteringLogPage();
                 break;
             }
 
-            case port.name.startsWith(FULLSCREEN_USER_RULES_EDITOR): {
+            case port.name.startsWith(Page.FullscreenUserRules): {
                 fullscreenUserRulesEditor.onClosePage();
                 break;
             }

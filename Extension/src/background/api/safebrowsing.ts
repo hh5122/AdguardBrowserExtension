@@ -21,15 +21,19 @@ import SHA256 from 'crypto-js/sha256';
 import { logger } from '../../common/logger';
 import { SB_SUSPENDED_CACHE_KEY } from '../../common/constants';
 import {
-    browserStorage,
     sbCache,
     sbRequestCache,
     SbCache,
-} from '../storages';
+} from '../storages/safebrowsing';
+import { browserStorage } from '../storages/shared-instances';
 import { UrlUtils } from '../utils/url';
 import { SAFEBROWSING_OUTPUT } from '../../../../constants';
 
-import { type ExtensionXMLHttpRequest, network } from './network';
+import {
+    type ExtensionXMLHttpRequest,
+    network,
+    ResponseLikeXMLHttpRequest,
+} from './network/main';
 
 /**
  * The Safe Browsing API checks whether a site is in a database of potentially
@@ -148,7 +152,7 @@ export class SafebrowsingApi {
             return SafebrowsingApi.createResponse(SbCache.SB_ALLOW_LIST);
         }
 
-        let response: ExtensionXMLHttpRequest;
+        let response: ExtensionXMLHttpRequest | ResponseLikeXMLHttpRequest;
 
         try {
             response = await network.lookupSafebrowsing(shortHashes);
@@ -206,6 +210,7 @@ export class SafebrowsingApi {
      * @param requestUrl    Request URL.
      * @param referrerUrl   Referrer URL.
      * @param sbList        Safebrowsing list.
+     *
      * @returns Page URL.
      */
     private static getErrorPageURL(
@@ -233,8 +238,9 @@ export class SafebrowsingApi {
     /**
      * Parses safebrowsing service response.
      *
-     * @param responseText  Response text.
-     * @param hashesMap  Hashes hosts map.
+     * @param responseText Response text.
+     * @param hashesMap Hashes hosts map.
+     *
      * @returns Safebrowsing list or null.
      */
     private static async processSbResponse(
@@ -283,6 +289,7 @@ export class SafebrowsingApi {
      * Creates lookup callback parameter.
      *
      * @param sbList Safebrowsing list we've detected or null.
+     *
      * @returns Safebrowsing list or null if this list is SB_ALLOW_LIST (means that site was allowlisted).
      */
     private static createResponse(sbList: string): string | null {

@@ -15,11 +15,15 @@
  * You should have received a copy of the GNU General Public License
  * along with AdGuard Browser Extension. If not, see <http://www.gnu.org/licenses/>.
  */
+
 import { getHostname } from 'tldts';
 import browser, { type Tabs } from 'webextension-polyfill';
 
-import { isHttpRequest } from '@adguard/tswebextension';
+import { isHttpRequest } from 'tswebextension';
 
+import { executeScript } from 'scripting-service';
+
+import { getErrorMessage } from '../common/error';
 import { UserAgent } from '../common/user-agent';
 import { logger } from '../common/logger';
 import {
@@ -29,10 +33,11 @@ import {
 } from '../../../constants';
 import { TabsApi } from '../common/api/extension/tabs';
 
-import { createPromiseWithTimeout } from './utils/timers';
+import { createPromiseWithTimeout } from './utils/timeouts';
 
 /**
- * Helper class for injecting content script into tabs, opened before extension initialization.
+ * Helper class for injecting content script into tabs, opened before extension
+ * initialization.
  */
 export class ContentScriptInjector {
     /**
@@ -48,8 +53,9 @@ export class ContentScriptInjector {
     private static contentScripts = [
         ContentScriptInjector.createContentScriptUrl(CONTENT_SCRIPT_START_OUTPUT),
         ContentScriptInjector.createContentScriptUrl(CONTENT_SCRIPT_END_OUTPUT),
-        ContentScriptInjector.createContentScriptUrl(SUBSCRIBE_OUTPUT),
-    ];
+        // Subscribe to custom filters works only for MV2 version, since MV3
+        // doesn't support any kind of scripts due to CWS policy.
+    ].concat(__IS_MV3__ ? [] : [ContentScriptInjector.createContentScriptUrl(SUBSCRIBE_OUTPUT)]);
 
     /**
      * Content scripts are blocked from executing on some websites by browsers
@@ -58,6 +64,8 @@ export class ContentScriptInjector {
     private static jsInjectRestrictedHostnames = {
         chromium: [
             'chrome.google.com',
+            // https://chromium.googlesource.com/chromium/src/+/5d1f214db0f7996f3c17cd87093d439ce4c7f8f1/chrome/common/extensions/chrome_extensions_client.cc#232
+            'chromewebstore.google.com',
         ],
         firefox: [
             'accounts-static.cdn.mozilla.net',
@@ -98,9 +106,7 @@ export class ContentScriptInjector {
 
             const { id } = tab;
 
-            ContentScriptInjector.contentScripts.forEach((src) => {
-                tasks.push(ContentScriptInjector.inject(id, src));
-            });
+            tasks.push(ContentScriptInjector.inject(id, ContentScriptInjector.contentScripts));
         });
 
         // Loading order is not matter,
@@ -110,7 +116,7 @@ export class ContentScriptInjector {
         // Handles errors
         promises.forEach((promise) => {
             if (promise.status === 'rejected') {
-                logger.error('Cannot inject script to tab due to: ', promise.reason);
+                logger.error('Cannot inject scripts to tab due to: ', promise.reason);
             }
         });
     }
@@ -119,12 +125,13 @@ export class ContentScriptInjector {
      * Inject content-script into specified tab.
      *
      * @param tabId The ID of the tab to inject the content script into.
-     * @param src Path to content-script src.
+     * @param files The path of the JS files to inject, relative to the extension's root directory.
+     *
      * @throws Error if the content script injection times out or fails for another reason.
      */
     private static async inject(
         tabId: number,
-        src: string,
+        files: string[],
     ): Promise<void> {
         try {
             /**
@@ -132,17 +139,18 @@ export class ContentScriptInjector {
              * from freezing the application when Chrome drops tabs.
              */
             await createPromiseWithTimeout(
-                browser.tabs.executeScript(tabId, {
+                executeScript(tabId, {
                     allFrames: true,
-                    file: src,
+                    files,
                 }),
                 ContentScriptInjector.INJECTION_LIMIT_MS,
-                `Content script inject timeout: tab #${tabId} doesn't respond.`,
+                `Content script inject timeout because tab with id ${tabId} does not respond`,
             );
         } catch (error: unknown) {
             // re-throw error with custom message
-            const message = error instanceof Error ? error.message : String(error);
-            throw new Error(`Cannot inject ${src} to tab ${tabId}. Error: ${message}`);
+            throw new Error(
+                `Cannot inject ${files.join(', ')} to tab with id ${tabId}. Error: ${getErrorMessage(error)}`,
+            );
         }
     }
 
@@ -150,6 +158,7 @@ export class ContentScriptInjector {
      * Creates content-script relative url.
      *
      * @param output Content script output path.
+     *
      * @returns Content-script relative url.
      */
     private static createContentScriptUrl(output: string): string {
@@ -204,10 +213,29 @@ export class ContentScriptInjector {
     }
 
     /**
+     * Checks if session storage is available in the browser. If session storage
+     * is available then we suppose that background (event page for firefox or
+     * service worker for chromium) can die and we need to check if content
+     * scripts were injected to exclude double injection.
+     *
+     * If session storage is not available (in MV2), we suppose that background
+     * will not die and we don't need to check if content scripts were injected.
+     *
+     * @returns `true` if session storage is available, otherwise `false`.
+     */
+    private static isSessionStorageAvailable(): boolean {
+        return browser.storage?.session !== undefined;
+    }
+
+    /**
      * Sets the injected flag in session storage.
      * This method updates the session storage to indicate that content scripts have been injected.
      */
     public static async setInjected(): Promise<void> {
+        if (!ContentScriptInjector.isSessionStorageAvailable()) {
+            return;
+        }
+
         try {
             await browser.storage.session.set({ [ContentScriptInjector.INJECTED_KEY]: true });
         } catch (e) {
@@ -224,6 +252,10 @@ export class ContentScriptInjector {
      * @returns True if content scripts were injected; otherwise, false.
      */
     public static async isInjected(): Promise<boolean> {
+        if (!ContentScriptInjector.isSessionStorageAvailable()) {
+            return false;
+        }
+
         let isInjected = false;
         try {
             const result = await browser.storage.session.get(ContentScriptInjector.INJECTED_KEY);

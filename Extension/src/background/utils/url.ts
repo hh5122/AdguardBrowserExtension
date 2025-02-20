@@ -195,6 +195,7 @@ export class UrlUtils {
      * Cleanups file path of a custom filter.
      *
      * @param path Path to filter.
+     *
      * @returns Cleaned path.
      */
     static trimFilterFilepath(path: string): string {
@@ -212,5 +213,26 @@ export class UrlUtils {
         const lastSeparatorIndex = Math.max(lastSlashIndex, lastBackslashIndex);
 
         return path.substring(lastSeparatorIndex);
+    }
+
+    /**
+     * Extracts upper level domain from domain.
+     *
+     * @param domain Domain.
+     *
+     * @returns Upper level domain.
+     *
+     * @example
+     * ```
+     * getUpperLevelDomain('www.example.com') => 'example.com'
+     * getUpperLevelDomain('test.pages.dev') => 'pages.dev'
+     * getUpperLevelDomain('allowlist.test.pages.dev') => 'test.pages.dev'
+     * ```
+     */
+    static getUpperLevelDomain(domain: string): string {
+        const parts = domain.split('.');
+        parts.shift();
+
+        return parts.join('.');
     }
 }
